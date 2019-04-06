@@ -1,0 +1,728 @@
+// for transformation of objects, compatibility issue
+@mixin transform($property) {
+  -webkit-transform: $property;
+  -ms-transform: $property;
+  -o-transform: $property;
+  transform: $property;
+}
+
+//for transition duration, compatibility
+@mixin transition-duration($trans-time) {
+  -webkit-transition-duration: $trans-time;
+  -ms-transition-duration: $trans-time;
+  -o-transition-duration: $trans-time;
+  transition-duration: $trans-time;
+}
+
+//for rounding corners, compatibility
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+  -ms-border-radius: $radius;
+  -o-border-radius: $radius;
+  border-radius: $radius;
+}
+
+//colours' map for the site's theme
+$colors: (
+  "light": #fff,
+  "dark-stripes": #313234,
+  "theme-highlight": #0cc8ee,
+  "secondary-highlight": #ccc,
+  "copyrights": #1e1919,
+  "nav-border": #ddd,
+  "paragraph": #aaa,
+  "layer": #000,
+  "strong": #000,
+  "transparency-light": rgba(0, 0, 0, 0.4),
+  "transparency-visible": rgba(0, 0, 0, 0.6)
+);
+
+// getting a spacific colour from a site's theme colours map
+// this is my first try in this, don't know if correct
+@function theme-color($th-color) {
+  @if map-has-key($colors, $th-color) {
+    @return map-get($colors, $th-color);
+  }
+
+  @warn "Unknown `#{$th-color}` in $colors.";
+  @return null;
+}
+
+// to be extended
+.background-covered {
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+// variables
+$gallery-height: 400px;
+$normal-font: "Open sans", sans-serif;
+$fancy-font: "Krona One", sans-serif;
+
+/* columns in the grid */
+.col-1 {
+  width: 8.33%;
+}
+.col-2 {
+  width: 16.66%;
+}
+.col-3 {
+  width: 25%;
+}
+.col-4 {
+  width: 33.33%;
+}
+.col-5 {
+  width: 41.66%;
+}
+.col-6 {
+  width: 50%;
+}
+.col-7 {
+  width: 58.33%;
+}
+.col-8 {
+  width: 66.66%;
+}
+.col-9 {
+  width: 75%;
+}
+.col-10 {
+  width: 83.33%;
+}
+.col-11 {
+  width: 91.66%;
+}
+.col-12 {
+  width: 100%;
+}
+
+/* columns offset in the grid*/
+.col-offset-1 {
+  margin-left: 8.33%;
+}
+.col-offset-2 {
+  margin-left: 16.66%;
+}
+.col-offset-3 {
+  margin-left: 25%;
+}
+.col-offset-4 {
+  margin-left: 33.33%;
+}
+.col-offset-5 {
+  margin-left: 41.66%;
+}
+.col-offset-6 {
+  margin-left: 50%;
+}
+.col-offset-7 {
+  margin-left: 58.33%;
+}
+.col-offset-8 {
+  margin-left: 66.66%;
+}
+.col-offset-9 {
+  margin-left: 75%;
+}
+.col-offset-10 {
+  margin-left: 83.33%;
+}
+.col-offset-11 {
+  margin-left: 91.66%;
+}
+.col {
+  float: left;
+}
+/* clearfix */
+.row:before,
+.row:after {
+  content: " ";
+  display: table;
+  clear: both;
+}
+/* global */
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0 0;
+  font-family: $normal-font;
+  background-color: theme-color(light);
+}
+h1 {
+  font-size: 1.8rem;
+}
+h2 {
+  font-family: $fancy-font;
+  font-size: 1.6rem;
+  text-transform: uppercase;
+}
+h3 {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-bottom: 0;
+}
+h4 {
+  font-family: $fancy-font;
+  font-weight: bold;
+  font-size: 1rem;
+  text-transform: uppercase;
+}
+p {
+  color: theme-color(paragraph);
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 90%;
+}
+.white-section {
+  margin: 50px auto;
+  text-align: center;
+  background-color: theme-color(light);
+}
+.layer {
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  background-color: theme-color(layer);
+  background-color: theme-color(transparency-light);
+  color: theme-color(light);
+}
+.object-fit-cover {
+  object-fit: cover;
+}
+
+/* header */
+header {
+  background-color: theme-color(dark-stripes);
+  height: 50px;
+
+  img {
+    padding: 10px 0;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    float: right;
+  }
+
+  li {
+    display: inline-block;
+  }
+
+  li:first-child a {
+    color: theme-color(theme-highlight);
+  }
+
+  a {
+    display: block;
+    line-height: 50px;
+    padding: 0 20px;
+    color: theme-color(light);
+    font-weight: bold;
+    text-decoration: none;
+    text-transform: uppercase;
+    &:hover {
+      background: theme-color(secondary-highlight);
+    }
+  }
+} /* header */
+
+/* hero */
+.hero {
+  height: 300px;
+  background-image: url("https://images.unsplash.com/photo-1523006520266-d3a4a8152803?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2500&q=80");
+  @extend .background-covered;
+
+  .slogan {
+    width: 45vw;
+    max-width: 800px;
+    padding: 0 30px;
+    margin-top: 60px;
+    background-color: theme-color(dark-stripes);
+    background-color: theme-color(transparency-visible);
+    color: theme-color(light);
+    float: right;
+    text-transform: uppercase;
+  }
+
+  h1:first-line {
+    font-weight: 200;
+  }
+
+  h1:last-line {
+    font-weight: 900;
+  }
+} /* hero */
+
+/* advantages */
+.advantages {
+  p {
+    padding: 0 10px;
+    margin-top: 5px;
+  }
+
+  .fa {
+    width: 80px;
+    height: 80px;
+    padding: 10px;
+    background-color: theme-color(strong);
+    color: theme-color(light);
+    font-size: 55px;
+    @include border-radius(20px);
+  }
+
+  .laptop > .fa {
+    background-color: theme-color(theme-highlight);
+  }
+
+  .laptop + h3 {
+    color: theme-color(theme-highlight);
+  }
+} /* advantages */
+
+/* gallery */
+.gallery {
+  height: $gallery-height;
+
+  .col {
+    @extend .background-covered;
+    height: ($gallery-height/2);
+    position: relative;
+  }
+
+  img {
+    height: ($gallery-height/2);
+    width: 100%;
+    top: 0;
+    left: 0;
+  }
+
+  .layer {
+    position: absolute;
+    @include transform(rotateX(180deg));
+    backface-visibility: hidden;
+    @include transition-duration(0.5s);
+    font-size: 18px;
+    opacity: 0.3;
+  }
+
+  i {
+    margin: 90px 20px;
+  }
+
+  .col:hover .layer {
+    opacity: 1;
+    @include transform(rotateX(360deg));
+  }
+} /* gallery */
+
+/* staff */
+.staff {
+  .photo {
+    width: 180px;
+    height: 180px;
+    margin: 0 auto;
+    @extend .background-covered;
+    @include border-radius(50%);
+  }
+
+  .ceo {
+    background-image: url(https://images.unsplash.com/photo-1519345182560-3f2917c472ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80);
+  }
+  .cto {
+    background-image: url(https://images.unsplash.com/photo-1514794749374-fb67509dbb7f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1000&q=80);
+  }
+  .secretary {
+    background-image: url(https://images.unsplash.com/photo-1519362909365-f8591adb630e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80);
+  }
+  .sales {
+    background-image: url(https://images.unsplash.com/photo-1495078065017-564723e7e3e7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1900&q=80);
+  }
+
+  .layer {
+    padding: 60px 10px;
+    font-size: 20px;
+    opacity: 0;
+    @include transition-duration(0.5s);
+  }
+
+  p {
+    color: theme-color(light);
+  }
+
+  .col:hover .layer {
+    opacity: 1;
+  }
+} /* staff */
+
+/* promo */
+.promo {
+  height: 400px;
+  position: relative;
+  padding: 50px 0 0 0;
+  background-color: theme-color(secondary-highlight);
+
+  img {
+    height: 350px;
+    width: 100%;
+  }
+
+  p,
+  h2 {
+    margin: 10px 20px;
+  }
+
+  .row > .col > .row > .col:last-child p {
+    font-style: italic;
+  }
+} /* promo */
+
+/* numbers */
+.numbers {
+  h2 {
+    margin-bottom: 0;
+  }
+  h3 {
+    margin-top: 0;
+    color: theme-color(theme-highlight);
+  }
+} /* numbers */
+
+/* footer */
+footer {
+  .about {
+    /* about */
+    height: 300px;
+    margin: 0;
+    padding: 30px 0;
+    background-color: theme-color(dark-stripes);
+
+    p,
+    h4 {
+      color: theme-color(light);
+    }
+
+    .col-bold {
+      font-weight: bold;
+    }
+
+    .col {
+      position: relative;
+      padding: 0 10px;
+    }
+
+    h4::after {
+      display: inline-block;
+      position: absolute;
+      top: 32px;
+      width: 50px;
+      height: 2px;
+      margin: 0 4px;
+      line-height: 2px;
+      content: " ";
+      background-color: theme-color(light);
+    }
+
+    .col > .row p {
+      margin-top: 0;
+    }
+
+    .icon-btn {
+      width: 35px;
+      height: 35px;
+      margin: 5px 2px;
+      border: 0;
+      background-color: theme-color(theme-highlight);
+      color: theme-color(light);
+      cursor: pointer;
+      font-size: 20px;
+    }
+  } /* about */
+
+  .copyrights {
+    height: 50px;
+    padding: 12px;
+    background-color: theme-color(copyrights);
+    text-align: center;
+
+    p {
+      margin: 0;
+    }
+  } /* copyrights */
+} /*footer */
+
+@media (max-width: 767px) {
+  /* For phones: */
+  [class^="col"] {
+    width: 100%;
+    display: block;
+  }
+
+  .col-s-1 {
+    width: 8.33%;
+  }
+  .col-s-2 {
+    width: 16.66%;
+  }
+  .col-s-3 {
+    width: 25%;
+  }
+  .col-s-4 {
+    width: 33.33%;
+  }
+  .col-s-5 {
+    width: 41.66%;
+  }
+  .col-s-6 {
+    width: 50%;
+  }
+  .col-s-7 {
+    width: 58.33%;
+  }
+  .col-s-8 {
+    width: 66.66%;
+  }
+  .col-s-9 {
+    width: 75%;
+  }
+  .col-s-10 {
+    width: 83.33%;
+  }
+  .col-s-11 {
+    width: 91.66%;
+  }
+  .col-s-12 {
+    width: 100%;
+  }
+
+  .container {
+    width: 97%;
+  }
+  h1 {
+    font-size: 1.3rem;
+  }
+  h2 {
+    font-size: 1.1rem;
+  }
+  h3 {
+    font-size: 1rem;
+  }
+  h4 {
+    font-size: 0.8rem;
+  }
+  p {
+    font-size: 0.8em;
+  }
+  .white-section {
+    margin: 30px auto;
+  }
+
+  header {
+    $nav-line-height: 35px;
+    height: ($nav-line-height * 6 + 70px);
+
+    img {
+      display: block;
+      float: none;
+      margin: 10px auto;
+      padding: 0;
+    }
+
+    ul {
+      float: none;
+      text-align: center;
+    }
+
+    li {
+      display: block;
+    }
+
+    a {
+      line-height: $nav-line-height;
+      border: 1px solid theme-color(nav-border);
+      padding: 0;
+    }
+
+    li:focus a {
+      background: theme-color(dark-stripes);
+    }
+  } /* header */
+
+  .hero {
+    height: 320px;
+
+    .slogan {
+      width: 70vw;
+    }
+  } /*hero */
+
+  .advantages .col {
+    margin: 10px auto;
+  }
+
+  .featured > .row > .col {
+    margin-left: 0;
+  }
+
+  .gallery {
+    height: ($gallery-height * 5);
+
+    .layer {
+      width: 10%;
+      @include transform(none);
+      opacity: 1;
+    }
+
+    i {
+      display: block;
+      margin: 50px auto;
+    }
+
+    .row > .col:hover .layer {
+      @include transform(none);
+    }
+  } /* gallery */
+
+  .staff {
+    .photo {
+      position: relative;
+    }
+
+    .layer {
+      opacity: 1;
+      height: 25px;
+      padding: 0;
+      position: absolute;
+      top: 130px;
+    }
+    .layer > p {
+      margin: 0;
+    }
+  } /* staff */
+
+  .promo {
+    height: 600px;
+    padding: 20px 10px;
+
+    p,
+    h2 {
+      margin: 10px 0;
+    }
+  } /* promo */
+
+  footer {
+    .about {
+      height: 480px;
+      padding: 10px 0;
+    }
+    h4::after {
+      width: 100px;
+      top: 24px;
+    }
+  } /* footer  */
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .col-m-1 {
+    width: 8.33%;
+  }
+  .col-m-2 {
+    width: 16.66%;
+  }
+  .col-m-3 {
+    width: 25%;
+  }
+  .col-m-4 {
+    width: 33.33%;
+  }
+  .col-m-5 {
+    width: 41.66%;
+  }
+  .col-m-6 {
+    width: 50%;
+  }
+  .col-m-7 {
+    width: 58.33%;
+  }
+  .col-m-8 {
+    width: 66.66%;
+  }
+  .col-m-9 {
+    width: 75%;
+  }
+  .col-m-10 {
+    width: 83.33%;
+  }
+  .col-m-11 {
+    width: 91.66%;
+  }
+  .col-m-12 {
+    width: 100%;
+  }
+
+  .container {
+    width: 95%;
+  }
+  .white-section {
+    margin: 40px auto;
+  }
+
+  header > .row > nav ul > li > a {
+    padding: 0 10px;
+  }
+
+  .gallery {
+    height: ($gallery-height * 2);
+  }
+
+  .advantages > .row > .col:last-of-type {
+    display: block;
+    margin-left: 25%;
+  }
+
+  .gallery .layer {
+    width: 40px;
+    @include transform(none);
+    opacity: 1;
+  }
+  .gallery .layer i {
+    margin: 50px auto;
+    display: block;
+  }
+  .gallery > .row > .col:hover .layer {
+    @include transform(none);
+  }
+
+  .staff .photo {
+    position: relative;
+  }
+  .staff .layer {
+    opacity: 1;
+    height: 30px;
+    padding: 0;
+    position: absolute;
+    top: 130px;
+  }
+  .staff .layer > p {
+    margin: 0;
+  }
+
+  footer .about {
+    height: 380px;
+    padding: 10px 0;
+  }
+  footer p {
+    float: left;
+    margin-right: 20px;
+  }
+  footer .icon-btn {
+    margin: 0 8px;
+  }
+}
